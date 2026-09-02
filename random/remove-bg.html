@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Remove BG— GII ZOLDYCK</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+:root{--header-h:92px}
+body{
+    background:#1d1e22;color:#d8d8dc;
+    font-family:"Courier New",Courier,monospace;
+    overflow-x:hidden;
+}
+a{color:inherit}
+.page{width:100%;max-width:720px;margin:0 auto;padding-top:var(--header-h);padding-bottom:82px}
+
+/* HEADER */
+.topbar{
+    height:92px;
+    min-height:92px;
+    padding:14px 30px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:#24262b;
+    border-bottom:1px solid #45474e;
+    overflow:hidden;
+}
+.avatar{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    object-fit:cover;
+    flex:0 0 58px;
+    filter:grayscale(.2);
+}
+.identity{
+    min-width:0;
+    flex:1 1 auto;
+}
+.identity h1{
+    font-family:Arial,sans-serif;
+    font-size:1.2rem;
+    font-weight:800;
+    color:#f1f1f2;
+    letter-spacing:-.25px;
+    margin-bottom:4px;
+    line-height:1.05;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.identity p{
+    font-size:.78rem;
+    color:#9c9da2;
+    letter-spacing:1px;
+    line-height:1.15;
+    white-space:nowrap;
+}
+.social-top{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    flex:0 0 auto;
+    margin-left:auto;
+}
+.social-top a{
+    width:48px;
+    height:48px;
+    background:#202228;
+    border:1px solid #484a51;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:#aeb0b6;
+    font-size:1.25rem;
+    transition:.15s ease;
+}
+.social-top a:active{
+    background:#292a2f;
+    transform:scale(.96);
+}
+
+/* CONTENT */
+main{padding:0 30px}
+.section{
+    padding:24px 0 30px;
+    border-bottom:1px solid #38393e;
+    scroll-margin-top:8px;
+}
+.section:last-of-type{border-bottom:0}
+.label{
+    font-size:1.05rem;
+    letter-spacing:6px;
+    color:#e1e1e4;
+    padding-bottom:25px;
+    border-bottom:1px solid #44454a;
+    margin-bottom:38px;
+}
+
+/* MOBILE */
+@media(max-width:620px){
+    .topbar{height:92px;min-height:92px;padding:14px 30px;gap:12px}
+    .avatar{width:58px;height:58px;flex-basis:58px}
+    .identity h1{font-size:1.18rem}
+    .identity p{font-size:.76rem}
+    .social-top a{width:47px;height:47px;font-size:1.2rem}
+}
+@media(max-width:480px){
+    .topbar{height:92px;min-height:92px;padding:14px 30px;gap:10px}
+    .avatar{width:56px;height:56px;flex-basis:56px}
+    .identity h1{font-size:1.08rem}
+    .identity p{font-size:.7rem}
+    .social-top a{width:45px;height:45px;font-size:1.15rem}
+    main{padding:0 30px}
+    .section{padding:24px 0 28px}
+}
+@media(max-width:390px){
+    :root{--header-h:88px}
+    .topbar{height:88px;min-height:88px;padding:12px 16px;gap:8px}
+    .avatar{width:52px;height:52px;flex-basis:52px}
+    .identity h1{font-size:.98rem}
+    .identity p{font-size:.62rem}
+    .social-top a{width:40px;height:42px;font-size:1rem}
+    main{padding:0 20px}
+}
+
+.topbar{
+    position:fixed !important;
+    top:0 !important;
+    left:50% !important;
+    right:auto !important;
+    transform:translateX(-50%) !important;
+    width:min(720px,100%) !important;
+    margin:0 !important;
+    z-index:9999 !important;
+}
+
+/* REMOVE BG TOOL */
+.tools-page{min-height:100vh;padding-top:var(--header-h);padding-bottom:82px}
+.tools-main{padding:0 30px;max-width:720px;margin:0 auto}
+.tool-section{padding:30px 0}
+.tool-label{font-size:1.05rem;letter-spacing:5px;color:#e1e1e4;padding-bottom:22px;border-bottom:1px solid #44454a;margin-bottom:30px}
+.downloader{border:1px solid #3b3c42;border-radius:14px;padding:22px 20px;background:#222328}
+.tool-title{font-family:Arial,sans-serif;font-size:1.4rem;color:#f1f1f2;margin-bottom:9px}
+.tool-desc{font-size:.78rem;line-height:1.7;color:#aaaab0;margin-bottom:18px}
+.back-btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:1px solid #45464c;border-radius:9px;padding:10px 13px;color:#bfc0c5;font-size:.68rem;margin-bottom:18px}
+.upload-btn{width:100%;min-height:90px;border:1px dashed #55575e;background:#1b1c20;color:#eee;border-radius:10px;font-family:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.upload-btn i{font-size:1.35rem}.upload-btn span{font-size:.7rem;letter-spacing:1px}.upload-btn small{font-size:.56rem;color:#777980}
+.url-input{width:100%;margin-top:10px;background:#1b1c20;border:1px solid #45464c;border-radius:10px;padding:13px;color:#eee;font-family:inherit;font-size:.76rem;outline:none}
+.url-input:focus{border-color:#707178}
+.remove-btn{width:100%;height:48px;margin-top:12px;border:1px solid #5a5b61;background:#292a2f;color:#eee;border-radius:10px;font-family:inherit;font-size:.72rem;cursor:pointer}
+.remove-btn:active{transform:scale(.98)}
+.remove-btn:disabled{opacity:.5;cursor:not-allowed}
+.preview-card{display:none;margin-top:14px;border:1px solid #3b3c42;border-radius:10px;overflow:hidden;background:#111216}
+.preview-card.show{display:block}
+.preview-head{height:38px;padding:0 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #34353b;color:#999aa1;font-size:.58rem;letter-spacing:1.4px}
+.preview-card>img{display:block;width:100%;max-height:390px;object-fit:contain}
+.mini-btn{width:27px;height:27px;border:1px solid #45464c;background:#24262b;color:#aaa;border-radius:7px;cursor:pointer}
+.checker{display:flex;justify-content:center;background-color:#eee;background-image:linear-gradient(45deg,#d0d0d0 25%,transparent 25%),linear-gradient(-45deg,#d0d0d0 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#d0d0d0 75%),linear-gradient(-45deg,transparent 75%,#d0d0d0 75%);background-size:24px 24px;background-position:0 0,0 12px,12px -12px,-12px 0}
+.checker img{display:block;width:100%;max-height:390px;object-fit:contain}
+.result-actions{padding:12px}
+.result-actions a{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border:1px solid #45464c;border-radius:9px;padding:11px;color:#eee;font-size:.67rem;background:#24262b}
+.status{display:none;margin-top:13px;padding:11px;border:1px dashed #45464c;border-radius:9px;font-size:.68rem;line-height:1.5;color:#aaaab0}
+.status.show{display:block}
+.tool-note{margin-top:14px;font-size:.58rem;line-height:1.5;color:#777980}
+@media(max-width:480px){.tools-main{padding:0 30px}.downloader{padding:20px 16px}}
+@media(max-width:390px){.tools-main{padding:0 20px}}
+
+</style>
+</head>
+<body>
+<div class="tools-page">
+<header class="topbar">
+    <img class="avatar" src="https://files.catbox.moe/e58766.jpg" alt="GIIKUN">
+    <div class="identity">
+        <h1>GII ZOLDYCK</h1>
+        <p>Web Developer</p>
+    </div>
+    <div class="social-top">
+        <a href="https://github.com/GiiZoldyck" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://t.me/sugz2" target="_blank" rel="noopener" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://wa.me/6285722503520" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="far fa-comment"></i></a>
+        <a href="https://tiktok.com/giizoldyck19" onclick="return false;" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+    </div>
+</header>
+<main class="tools-main">
+<section class="tool-section">
+<div class="tool-label">REMOVE BG</div>
+<a class="back-btn" href="#" onclick="history.back(); return false;"><i class="fas fa-arrow-left"></i> BACK TO PORTFOLIO</a>
+
+<div class="downloader">
+<h2 class="tool-title">Remove Background</h2>
+<p class="tool-desc">Hapus background foto otomatis.  ‎ ‎ ‎ ‎ ‎ ‎ ‎   Hasil Foto transparan kualitas HD.</p>
+
+<input id="imageInput" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+<button class="upload-btn" id="chooseBtn" type="button">
+    <i class="fas fa-image"></i>
+    <span>PILIH GAMBAR</span>
+    <small>JPG, PNG, WebP</small>
+</button>
+
+<input class="url-input" id="imageUrl" type="url" placeholder="Atau tempel URL gambar..." autocomplete="off">
+
+<div class="preview-card" id="originalCard">
+    <div class="preview-head">
+        <span>PREVIEW</span>
+        <button class="mini-btn" id="clearBtn" type="button"><i class="fas fa-times"></i></button>
+    </div>
+    <img id="originalPreview" alt="Preview">
+</div>
+
+<button class="remove-btn" id="removeBtn" type="button">
+    <i class="fas fa-magic"></i> REMOVE BACKGROUND
+</button>
+
+<div class="status" id="status"></div>
+
+<div class="preview-card" id="resultCard">
+    <div class="preview-head"><span>HASIL</span></div>
+    <div class="checker"><img id="resultPreview" alt="Hasil transparan"></div>
+    <div class="result-actions">
+        <a id="downloadResult" href="#" download="remove-bg.png"><i class="fas fa-download"></i> DOWNLOAD PNG</a>
+    </div>
+</div>
+
+<p class="tool-note">Format hasil: PNG transparan.</p>
+</div>
+</section>
+</main>
+<script>
+const REMOVE_BG_API_KEY = "EEuJLy9uVbXiMBB2RbGyUuM8";
+const API_URL = "https://api.remove.bg/v1.0/removebg";
+
+const input = document.getElementById("imageInput");
+const choose = document.getElementById("chooseBtn");
+const urlInput = document.getElementById("imageUrl");
+const originalCard = document.getElementById("originalCard");
+const original = document.getElementById("originalPreview");
+const clear = document.getElementById("clearBtn");
+const remove = document.getElementById("removeBtn");
+const status = document.getElementById("status");
+const resultCard = document.getElementById("resultCard");
+const result = document.getElementById("resultPreview");
+const download = document.getElementById("downloadResult");
+
+let file = null;
+let objectUrl = null;
+let resultUrl = null;
+
+function msg(text, show=true){
+    status.textContent = text;
+    status.classList.toggle("show", show);
+}
+
+function clearResult(){
+    resultCard.classList.remove("show");
+    if(resultUrl){ URL.revokeObjectURL(resultUrl); resultUrl=null; }
+}
+
+choose.onclick = () => input.click();
+
+input.onchange = () => {
+    file = input.files[0] || null;
+    if(!file) return;
+
+    if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
+        msg("Format tidak didukung.");
+        input.value="";
+        return;
+    }
+
+    urlInput.value="";
+    if(objectUrl) URL.revokeObjectURL(objectUrl);
+    objectUrl = URL.createObjectURL(file);
+    original.src = objectUrl;
+    originalCard.classList.add("show");
+    clearResult();
+    msg("Gambar siap diproses.");
+};
+
+urlInput.oninput = () => {
+    const url = urlInput.value.trim();
+    if(!url) return;
+
+    file = null;
+    input.value="";
+    if(objectUrl){ URL.revokeObjectURL(objectUrl); objectUrl=null; }
+
+    original.src = url;
+    originalCard.classList.add("show");
+    clearResult();
+    msg("URL gambar siap diproses.");
+};
+
+clear.onclick = () => {
+    file=null;
+    input.value="";
+    urlInput.value="";
+    originalCard.classList.remove("show");
+    clearResult();
+    msg("", false);
+    if(objectUrl){ URL.revokeObjectURL(objectUrl); objectUrl=null; }
+};
+
+remove.onclick = async () => {
+    if(!file && !urlInput.value.trim()){
+        msg("Pilih gambar terlebih dahulu.");
+        return;
+    }
+
+    if(REMOVE_BG_API_KEY === "ISI_API_KEY_BARU_DI_SINI"){
+        msg("Masukkan API key remove.bg di bagian REMOVE_BG_API_KEY.");
+        return;
+    }
+
+    remove.disabled=true;
+    msg("MEMPROSES...");
+
+    try{
+        const form = new FormData();
+        form.append("size","auto");
+
+        if(file){
+            form.append("image_file",file,file.name);
+        }else{
+            form.append("image_url",urlInput.value.trim());
+        }
+
+        const response = await fetch(API_URL,{
+            method:"POST",
+            headers:{"X-Api-Key":REMOVE_BG_API_KEY},
+            body:form
+        });
+
+        if(!response.ok){
+            let errorText="HTTP "+response.status;
+            try{
+                const data=await response.json();
+                if(data.errors?.length) errorText=data.errors.map(x=>x.title||x.detail).join(", ");
+            }catch(_){}
+            throw new Error(errorText);
+        }
+
+        const blob=await response.blob();
+        if(!blob.type.startsWith("image/")) throw new Error("Response bukan gambar.");
+
+        if(resultUrl) URL.revokeObjectURL(resultUrl);
+        resultUrl=URL.createObjectURL(blob);
+        result.src=resultUrl;
+        download.href=resultUrl;
+        download.download="remove-bg-"+Date.now()+".png";
+        resultCard.classList.add("show");
+        msg("Berhasil! Background sudah dihapus.");
+        resultCard.scrollIntoView({behavior:"smooth",block:"nearest"});
+    }catch(err){
+        console.error(err);
+        msg("Gagal: "+err.message);
+    }finally{
+        remove.disabled=false;
+    }
+};
+</script>
+</body>
+</html>
