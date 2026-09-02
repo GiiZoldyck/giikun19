@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>YouTube Downloader V2 — GII ZOLDYCK</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+:root{--header-h:92px}
+body{
+    background:#1d1e22;color:#d8d8dc;
+    font-family:"Courier New",Courier,monospace;
+    overflow-x:hidden;
+}
+a{color:inherit}
+.page{width:100%;max-width:720px;margin:0 auto;padding-top:var(--header-h);padding-bottom:82px}
+
+/* HEADER */
+.topbar{
+    height:92px;
+    min-height:92px;
+    padding:14px 30px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:#24262b;
+    border-bottom:1px solid #45474e;
+    overflow:hidden;
+}
+.avatar{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    object-fit:cover;
+    flex:0 0 58px;
+    filter:grayscale(.2);
+}
+.identity{
+    min-width:0;
+    flex:1 1 auto;
+}
+.identity h1{
+    font-family:Arial,sans-serif;
+    font-size:1.2rem;
+    font-weight:800;
+    color:#f1f1f2;
+    letter-spacing:-.25px;
+    margin-bottom:4px;
+    line-height:1.05;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.identity p{
+    font-size:.78rem;
+    color:#9c9da2;
+    letter-spacing:1px;
+    line-height:1.15;
+    white-space:nowrap;
+}
+.social-top{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    flex:0 0 auto;
+    margin-left:auto;
+}
+.social-top a{
+    width:48px;
+    height:48px;
+    background:#202228;
+    border:1px solid #484a51;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:#aeb0b6;
+    font-size:1.25rem;
+    transition:.15s ease;
+}
+.social-top a:active{
+    background:#292a2f;
+    transform:scale(.96);
+}
+
+/* CONTENT */
+main{padding:0 30px}
+.section{
+    padding:24px 0 30px;
+    border-bottom:1px solid #38393e;
+    scroll-margin-top:8px;
+}
+.section:last-of-type{border-bottom:0}
+.label{
+    font-size:1.05rem;
+    letter-spacing:6px;
+    color:#e1e1e4;
+    padding-bottom:25px;
+    border-bottom:1px solid #44454a;
+    margin-bottom:38px;
+}
+
+/* MOBILE */
+@media(max-width:620px){
+    .topbar{height:92px;min-height:92px;padding:14px 30px;gap:12px}
+    .avatar{width:58px;height:58px;flex-basis:58px}
+    .identity h1{font-size:1.18rem}
+    .identity p{font-size:.76rem}
+    .social-top a{width:47px;height:47px;font-size:1.2rem}
+}
+@media(max-width:480px){
+    .topbar{height:92px;min-height:92px;padding:14px 30px;gap:10px}
+    .avatar{width:56px;height:56px;flex-basis:56px}
+    .identity h1{font-size:1.08rem}
+    .identity p{font-size:.7rem}
+    .social-top a{width:45px;height:45px;font-size:1.15rem}
+    main{padding:0 30px}
+    .section{padding:24px 0 28px}
+}
+@media(max-width:390px){
+    :root{--header-h:88px}
+    .topbar{height:88px;min-height:88px;padding:12px 16px;gap:8px}
+    .avatar{width:52px;height:52px;flex-basis:52px}
+    .identity h1{font-size:.98rem}
+    .identity p{font-size:.62rem}
+    .social-top a{width:40px;height:42px;font-size:1rem}
+    main{padding:0 20px}
+}
+
+.topbar{
+    position:fixed !important;
+    top:0 !important;
+    left:50% !important;
+    right:auto !important;
+    transform:translateX(-50%) !important;
+    width:min(720px,100%) !important;
+    margin:0 !important;
+    z-index:9999 !important;
+}
+
+/* TOOLS PAGE STYLES */
+.tools-page{min-height:100vh;padding-top:var(--header-h);padding-bottom:82px}
+.tools-main{padding:0 30px;max-width:720px;margin:0 auto}
+.tool-section{padding:30px 0}
+.tool-label{font-size:1.05rem;letter-spacing:5px;color:#e1e1e4;padding-bottom:22px;border-bottom:1px solid #44454a;margin-bottom:30px}
+.downloader{border:1px solid #3b3c42;border-radius:14px;padding:24px 20px;background:#222328}
+.tool-title{font-family:Arial,sans-serif;font-size:1.45rem;color:#f1f1f2;margin-bottom:10px}
+.tool-desc{font-size:.82rem;line-height:1.75;color:#aaaab0;margin-bottom:22px}
+.url-box{display:flex;flex-direction:column;gap:10px}
+.url-input{width:100%;background:#1b1c20;border:1px solid #45464c;border-radius:10px;padding:14px;color:#eee;font-family:inherit;font-size:.8rem;outline:none}
+.url-input:focus{border-color:#707178}
+.download-btn{width:100%;height:48px;border:1px solid #5a5b61;background:#292a2f;color:#eee;border-radius:10px;font-family:inherit;font-size:.75rem;cursor:pointer}
+.download-btn:active{transform:scale(.97);background:#33343a}
+.type-row{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:0 0 16px}
+.type-btn{border:1px solid #45464c;background:#1b1c20;color:#92939a;border-radius:9px;padding:11px 7px;font-family:inherit;font-size:.68rem;cursor:pointer}
+.type-btn.active{background:#292a2f;color:#eee;border-color:#707178}
+.status{display:none;margin-top:18px;padding:13px;border:1px dashed #45464c;border-radius:10px;font-size:.72rem;line-height:1.6;color:#aaaab0}
+.status.show{display:block}
+
+.preview-media{
+    width:100%;
+    margin:0 0 14px;
+    border:1px solid #3b3c42;
+    border-radius:10px;
+    overflow:hidden;
+    background:#111216;
+}
+.preview-media video{
+    display:block;
+    width:100%;
+    max-height:420px;
+    object-fit:contain;
+    background:#000;
+}
+.preview-media audio{
+    display:block;
+    width:100%;
+    height:52px;
+}
+.photo-preview-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:10px}
+.photo-preview-item{position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:8px;background:#0b0c0f;border:1px solid #34353b}
+.photo-preview-item img{display:block;width:100%;height:100%;object-fit:cover}
+.photo-preview-item span{position:absolute;left:7px;bottom:7px;padding:4px 7px;border-radius:6px;background:rgba(0,0,0,.72);color:#eee;font-size:.58rem}
+.media-desc{
+    margin:10px 0 14px;
+    padding:13px 45px 13px 13px;
+    border:1px solid #3b3c42;
+    border-radius:10px;
+    background:#222328;
+    font-size:.72rem;
+    line-height:1.7;
+    color:#c9c9cd;
+    white-space:pre-wrap;
+    word-break:break-word;
+    position:relative;
+}
+.media-desc-label{
+    display:block;
+    margin-bottom:6px;
+    font-family:Arial,sans-serif;
+    font-size:.62rem;
+    font-weight:800;
+    letter-spacing:1.5px;
+    color:#888990;
+}
+.copy-desc{
+    position:absolute;
+    right:9px;
+    top:9px;
+    width:28px;
+    height:28px;
+    border:1px solid #45464c;
+    background:#1b1c20;
+    color:#bfc0c5;
+    border-radius:7px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.15s ease;
+}
+.copy-desc:active{transform:scale(.94);background:#292a2f}
+
+.result{display:none;margin-top:16px;border:1px solid #3b3c42;border-radius:12px;padding:14px;background:#1b1c20}
+.result.show{display:block}
+.result-title{font-family:Arial,sans-serif;color:#eee;font-size:.85rem;margin-bottom:10px}
+.result-actions{display:grid;gap:8px}
+.result-actions a{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border:1px solid #45464c;border-radius:9px;padding:11px;color:#eee;font-size:.68rem}
+.tool-note{margin-top:18px;font-size:.62rem;line-height:1.6;color:#777980}
+.back-btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:1px solid #45464c;border-radius:9px;padding:10px 13px;color:#bfc0c5;font-size:.68rem;margin-bottom:18px}
+@media(max-width:480px){.tools-main{padding:0 30px}.downloader{padding:22px 16px}.tool-title{font-size:1.3rem}}
+@media(max-width:390px){.tools-main{padding:0 20px}}
+
+/* YOUTUBE DOWNLOADER — DISTINCT RESULT DESIGN */
+.yt-card{
+    border:1px solid #41434a;
+    border-radius:16px;
+    overflow:hidden;
+    background:#25272c;
+    box-shadow:0 8px 25px rgba(0,0,0,.16);
+}
+.yt-thumb{
+    width:100%;
+    aspect-ratio:16/9;
+    background:#111216;
+    overflow:hidden;
+}
+.yt-thumb img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+}
+.yt-meta{padding:16px}
+.yt-title{
+    font-family:Arial,sans-serif;
+    color:#f4f4f5;
+    font-size:1rem;
+    font-weight:700;
+    line-height:1.4;
+    margin:0;
+}
+.yt-sub{
+    color:#96979e;
+    font-size:.68rem;
+    margin-top:8px;
+    line-height:1.5;
+}
+.yt-result{
+    display:none;
+    margin-top:18px;
+}
+.yt-result.show{display:block}
+.yt-format-title{
+    font-family:Arial,sans-serif;
+    font-size:.72rem;
+    letter-spacing:2px;
+    color:#aeb0b6;
+    margin:20px 0 9px;
+}
+.yt-download-list{display:grid;gap:8px}
+.yt-download-list a{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    min-height:45px;
+    padding:11px 13px;
+    border:1px solid #41434a;
+    border-radius:10px;
+    background:#1d1f23;
+    color:#e7e7e9;
+    text-decoration:none;
+    font-size:.68rem;
+}
+.yt-download-list a span{
+    color:#8f9198;
+    font-size:.6rem;
+}
+.yt-download-list a:active{transform:scale(.98);background:#2b2d32}
+
+</style>
+</head>
+<body>
+<div class="tools-page">
+<header class="topbar">
+    <img class="avatar" src="https://files.catbox.moe/e58766.jpg" alt="GIIKUN">
+    <div class="identity">
+        <h1>GII ZOLDYCK</h1>
+        <p>Web Developer</p>
+    </div>
+    <div class="social-top">
+        <a href="https://github.com/GiiZoldyck" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://t.me/sugz2" target="_blank" rel="noopener" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://wa.me/6285722503520" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="far fa-comment"></i></a>
+        <a href="https://tiktok.com/giizoldyck19" onclick="return false;" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+    </div>
+</header>
+<main class="tools-main">
+<section class="tool-section">
+<div class="tool-label">TOOLS</div>
+<a class="back-btn" href="#" onclick="history.back(); return false;"><i class="fas fa-arrow-left"></i> BACK TO PORTFOLIO</a>
+<div class="downloader">
+<h2 class="tool-title">YouTube Downloader V2</h2>
+<p class="tool-desc">Download MP4 atau MP3 dari link YouTube publik.</p>
+
+<div class="type-row">
+<button class="type-btn active" data-type="mp4"><i class="fas fa-video"></i> MP4</button>
+<button class="type-btn" data-type="mp3"><i class="fas fa-music"></i> MP3</button>
+</div>
+
+<div class="url-box">
+<input class="url-input" id="youtubeUrl" type="url" placeholder="Tempel link YouTube di sini..." autocomplete="off">
+<button class="download-btn" id="downloadBtn"><i class="fas fa-download"></i> DOWNLOAD</button>
+</div>
+
+<div class="status" id="status"></div>
+<div class="yt-result" id="result">
+<div class="result-title" id="resultTitle">Hasil download</div>
+<div class="yt-card" id="ytCard">
+  <div class="yt-thumb" id="ytThumb"></div>
+  <div class="yt-meta">
+    <h3 class="yt-title" id="ytTitle">YouTube</h3>
+    <div class="yt-sub" id="ytSub"></div>
+  </div>
+</div>
+<div class="yt-format-title" id="formatTitle">VIDEO</div>
+<div class="yt-download-list" id="resultActions"></div>
+</div>
+<p class="tool-note">Mendukung link YouTube biasa maupun youtu.be. Ketersediaan kualitas dan audio bergantung pada video dan layanan API.</p>
+</div>
+</section>
+</main>
+<script>
+const btn=document.getElementById('downloadBtn');
+const input=document.getElementById('youtubeUrl');
+const status=document.getElementById('status');
+const result=document.getElementById('result');
+const resultTitle=document.getElementById('resultTitle');
+const resultActions=document.getElementById('resultActions');
+const ytThumb=document.getElementById('ytThumb');
+const ytTitle=document.getElementById('ytTitle');
+const ytSub=document.getElementById('ytSub');
+const formatTitle=document.getElementById('formatTitle');
+
+let selectedType='mp4';
+
+document.querySelectorAll('.type-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.type-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    selectedType=b.dataset.type;
+    result.classList.remove('show');
+    clearResult();
+  });
+});
+
+function clearResult(){
+  resultActions.innerHTML='';
+  ytThumb.innerHTML='';
+  ytTitle.textContent='YouTube';
+  ytSub.textContent='';
+}
+
+function setStatus(text,show=true){
+  status.textContent=text;
+  status.classList.toggle('show',show);
+}
+
+function isYouTubeUrl(value){
+  try{
+    const u=new URL(value);
+    const host=u.hostname.toLowerCase().replace(/^www\./,'');
+    return ['youtube.com','m.youtube.com','youtu.be','youtube-nocookie.com'].includes(host);
+  }catch(e){return false}
+}
+
+function getFirst(obj,keys){
+  for(const key of keys){
+    let value=obj;
+    for(const part of key.split('.')){
+      if(value==null) break;
+      value=value[part];
+    }
+    if(value!==undefined && value!==null && value!=='') return value;
+  }
+  return null;
+}
+
+function mediaUrl(item){
+  if(typeof item==='string' && /^https?:\/\//i.test(item)) return item;
+  if(!item || typeof item!=='object') return null;
+  return getFirst(item,[
+    'url','download','download_url','downloadUrl','link','src',
+    'video','audio','play','play_url','playUrl'
+  ]);
+}
+
+function normalizeItems(value){
+  if(!value) return [];
+  if(Array.isArray(value)) return value;
+  if(typeof value==='object') return Object.values(value);
+  return [value];
+}
+
+function addDownload(label,url){
+  if(!url) return;
+  const a=document.createElement('a');
+  const left=document.createElement('span');
+  left.textContent=label;
+  const icon=document.createElement('i');
+  icon.className='fas fa-download';
+  a.append(left,icon);
+  a.href=url;
+  a.target='_blank';
+  a.rel='noopener noreferrer';
+  resultActions.appendChild(a);
+}
+
+function showInfo(root,fallbackTitle){
+  const title=getFirst(root,[
+    'title','name','video.title','data.title'
+  ]) || fallbackTitle || 'YouTube Video';
+
+  // MP4 API may return the thumbnail under several common keys.
+  const thumb=getFirst(root,[
+    'thumbnail','thumbnail_url','thumbnailUrl','thumbnailUrl',
+    'thumb','thumb_url','cover','image','image_url',
+    'data.thumbnail','data.thumbnail_url','video.thumbnail',
+    'video.thumbnail_url','video.thumb'
+  ]);
+
+  const channel=getFirst(root,[
+    'channel','author','uploader','channelName',
+    'data.channel','author.name','uploader.name'
+  ]);
+
+  const duration=getFirst(root,[
+    'duration','durationText','length','data.duration','video.duration'
+  ]);
+
+  ytTitle.textContent=String(title);
+  ytSub.textContent=[
+    channel ? 'Channel: '+channel : '',
+    duration ? 'Durasi: '+duration : ''
+  ].filter(Boolean).join(' • ');
+
+  if(thumb){
+    const img=document.createElement('img');
+    img.src=String(thumb);
+    img.alt='Thumbnail YouTube';
+    img.loading='eager';
+    img.referrerPolicy='no-referrer';
+    img.onerror=()=>{
+      // Fallback to YouTube's public thumbnail when the API did not provide a usable image.
+      const m=String(input.value).match(
+        /(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/
+      );
+      if(m){
+        img.onerror=()=>{ytThumb.innerHTML='';};
+        img.src='https://i.ytimg.com/vi/'+m[1]+'/hqdefault.jpg';
+      }else{
+        ytThumb.innerHTML='';
+      }
+    };
+    ytThumb.appendChild(img);
+  }else{
+    // MP4 API often omits thumbnail; get it directly from the YouTube video ID.
+    const m=String(input.value).match(
+      /(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/
+    );
+    if(m){
+      const img=document.createElement('img');
+      img.src='https://i.ytimg.com/vi/'+m[1]+'/hqdefault.jpg';
+      img.alt='Thumbnail YouTube';
+      img.loading='eager';
+      img.onerror=()=>{ytThumb.innerHTML='';};
+      ytThumb.appendChild(img);
+    }
+  }
+}
+
+function collectMedia(json){
+  const root=(json && json.data) ? json.data : json;
+  let items=[];
+
+  const addValue=(value)=>{
+    normalizeItems(value).forEach(item=>{
+      if(mediaUrl(item)) items.push(item);
+    });
+  };
+
+  [
+    'medias','media','formats','downloads',
+    'videos','video','videoFormats','video_formats',
+    'url','download','download_url','downloadUrl',
+    'video_url','videoUrl'
+  ].forEach(k=>addValue(getFirst(root,[k])));
+
+  // If the API nests the actual response in another object, inspect one level deeper.
+  if(!items.length && root && typeof root==='object'){
+    Object.values(root).forEach(v=>{
+      if(v && typeof v==='object') addValue(v);
+    });
+  }
+
+  const seen=new Set();
+  return {root,items:items.filter(x=>{
+    const u=mediaUrl(x);
+    if(!u || seen.has(u)) return false;
+    seen.add(u);
+    return true;
+  })};
+}
+
+async function downloadYouTube(){
+  const url=input.value.trim();
+  result.classList.remove('show');
+  clearResult();
+
+  if(!url){
+    setStatus('Silakan tempel link YouTube terlebih dahulu.');
+    return;
+  }
+
+  if(!isYouTubeUrl(url)){
+    setStatus('Link harus berupa link YouTube yang valid.');
+    return;
+  }
+
+  btn.disabled=true;
+  btn.style.opacity='.6';
+  setStatus('MEMPROSES YOUTUBE...');
+
+  try{
+    const api=selectedType==='mp3'
+      ? 'https://jerrycoder.oggyapi.workers.dev/down/ytmp3?url='+encodeURIComponent(url)
+      : 'https://jerrycoder.oggyapi.workers.dev/down/ytmp4?url='+encodeURIComponent(url);
+
+    const response=await fetch(api,{headers:{'Accept':'application/json'}});
+    if(!response.ok) throw new Error('HTTP '+response.status);
+
+    const json=await response.json();
+
+    if(json && (json.status==='error' || json.success===false)){
+      throw new Error(json.message || json.msg || 'Media tidak ditemukan.');
+    }
+
+    if(selectedType==='mp3'){
+      const root=(json && json.data) ? json.data : json;
+      const mp3Url=getFirst(root,['url','download','download_url','audio_url']);
+
+      if(!mp3Url) throw new Error('URL MP3 tidak ditemukan dari API.');
+
+      const title=getFirst(root,['title','name']) || 'YouTube MP3';
+      const quality=getFirst(root,['quality','qualityLabel','format']) || 'MP3';
+      const duration=getFirst(root,['duration','durationText','length']);
+
+      ytThumb.innerHTML='';
+      const musicThumb=document.createElement('div');
+      musicThumb.style.cssText=[
+        'width:100%','height:100%','min-height:220px',
+        'display:flex','align-items:center','justify-content:center',
+        'background:linear-gradient(135deg,#17181c,#292b31)'
+      ].join(';');
+      musicThumb.innerHTML='<i class="fas fa-music" style="font-size:5rem;color:#aaa"></i>';
+      ytThumb.appendChild(musicThumb);
+
+      ytTitle.textContent=String(title);
+      ytSub.textContent=[quality,duration?'Durasi: '+duration:''].filter(Boolean).join(' • ');
+
+      addDownload('MP3 '+String(quality).toUpperCase(),mp3Url);
+
+      resultTitle.textContent='MP3 ditemukan';
+      formatTitle.textContent='MP3';
+      result.classList.add('show');
+      setStatus('Berhasil menemukan MP3. Pilih tombol untuk download.',true);
+      return;
+    }
+
+    const {root,items}=collectMedia(json);
+    if(!items.length) throw new Error('URL MP4 tidak ditemukan dari API.');
+
+    showInfo(root,'YouTube MP4');
+
+    items.forEach(item=>{
+      const u=mediaUrl(item);
+      const q=getFirst(item,['quality','qualityLabel','resolution','label']);
+      // Keep the UI HD-only; do not expose the API's other quality labels.
+      addDownload(q ? 'HD MP4 • '+q : 'HD MP4',u);
+    });
+
+    resultTitle.textContent='MP4 ditemukan';
+    formatTitle.textContent='HD MP4';
+    result.classList.add('show');
+    setStatus('Berhasil menemukan MP4 HD. Pilih tombol untuk download.',true);
+
+  }catch(err){
+    setStatus('Gagal: '+(err.message || 'Terjadi kesalahan.')+' Coba lagi dengan link YouTube publik lain.',true);
+  }finally{
+    btn.disabled=false;
+    btn.style.opacity='1';
+  }
+}
+
+btn.addEventListener('click',downloadYouTube);
+input.addEventListener('keydown',e=>{if(e.key==='Enter')downloadYouTube();});
+</script>
+</body>
+</html>
