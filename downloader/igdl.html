@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Instagram Downloader — GII ZOLDYCK</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+:root{--header-h:92px}
+body{
+    background:#1d1e22;color:#d8d8dc;
+    font-family:"Courier New",Courier,monospace;
+    overflow-x:hidden;
+}
+a{color:inherit}
+.page{width:100%;max-width:720px;margin:0 auto;padding-top:var(--header-h);padding-bottom:82px}
+
+/* HEADER */
+.topbar{
+    height:92px;
+    min-height:92px;
+    padding:14px 30px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:#24262b;
+    border-bottom:1px solid #45474e;
+    overflow:hidden;
+}
+.avatar{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    object-fit:cover;
+    flex:0 0 58px;
+    filter:grayscale(.2);
+}
+.identity{
+    min-width:0;
+    flex:1 1 auto;
+}
+.identity h1{
+    font-family:Arial,sans-serif;
+    font-size:1.2rem;
+    font-weight:800;
+    color:#f1f1f2;
+    letter-spacing:-.25px;
+    margin-bottom:4px;
+    line-height:1.05;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.identity p{
+    font-size:.78rem;
+    color:#9c9da2;
+    letter-spacing:1px;
+    line-height:1.15;
+    white-space:nowrap;
+}
+.social-top{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    flex:0 0 auto;
+    margin-left:auto;
+}
+.social-top a{
+    width:48px;
+    height:48px;
+    background:#202228;
+    border:1px solid #484a51;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:#aeb0b6;
+    font-size:1.25rem;
+    transition:.15s ease;
+}
+.social-top a:active{
+    background:#292a2f;
+    transform:scale(.96);
+}
+
+/* CONTENT */
+main{padding:0 30px}
+.section{
+    padding:24px 0 30px;
+    border-bottom:1px solid #38393e;
+    scroll-margin-top:8px;
+}
+.section:last-of-type{border-bottom:0}
+.label{
+    font-size:1.05rem;
+    letter-spacing:6px;
+    color:#e1e1e4;
+    padding-bottom:25px;
+    border-bottom:1px solid #44454a;
+    margin-bottom:38px;
+}
+
+/* MOBILE */
+@media(max-width:620px){
+    .topbar{height:92px;min-height:92px;padding:14px 30px;gap:12px}
+    .avatar{width:58px;height:58px;flex-basis:58px}
+    .identity h1{font-size:1.18rem}
+    .identity p{font-size:.76rem}
+    .social-top a{width:47px;height:47px;font-size:1.2rem}
+}
+@media(max-width:480px){
+    .topbar{height:92px;min-height:92px;padding:14px 30px;gap:10px}
+    .avatar{width:56px;height:56px;flex-basis:56px}
+    .identity h1{font-size:1.08rem}
+    .identity p{font-size:.7rem}
+    .social-top a{width:45px;height:45px;font-size:1.15rem}
+    main{padding:0 30px}
+    .section{padding:24px 0 28px}
+}
+@media(max-width:390px){
+    :root{--header-h:88px}
+    .topbar{height:88px;min-height:88px;padding:12px 16px;gap:8px}
+    .avatar{width:52px;height:52px;flex-basis:52px}
+    .identity h1{font-size:.98rem}
+    .identity p{font-size:.62rem}
+    .social-top a{width:40px;height:42px;font-size:1rem}
+    main{padding:0 20px}
+}
+
+.topbar{
+    position:fixed !important;
+    top:0 !important;
+    left:50% !important;
+    right:auto !important;
+    transform:translateX(-50%) !important;
+    width:min(720px,100%) !important;
+    margin:0 !important;
+    z-index:9999 !important;
+}
+
+/* TOOLS PAGE STYLES */
+.tools-page{min-height:100vh;padding-top:var(--header-h);padding-bottom:82px}
+.tools-main{padding:0 30px;max-width:720px;margin:0 auto}
+.tool-section{padding:30px 0}
+.tool-label{font-size:1.05rem;letter-spacing:5px;color:#e1e1e4;padding-bottom:22px;border-bottom:1px solid #44454a;margin-bottom:30px}
+.downloader{border:1px solid #3b3c42;border-radius:14px;padding:24px 20px;background:#222328}
+.tool-title{font-family:Arial,sans-serif;font-size:1.45rem;color:#f1f1f2;margin-bottom:10px}
+.tool-desc{font-size:.82rem;line-height:1.75;color:#aaaab0;margin-bottom:22px}
+.url-box{display:flex;flex-direction:column;gap:10px}
+.url-input{width:100%;background:#1b1c20;border:1px solid #45464c;border-radius:10px;padding:14px;color:#eee;font-family:inherit;font-size:.8rem;outline:none}
+.url-input:focus{border-color:#707178}
+.download-btn{width:100%;height:48px;border:1px solid #5a5b61;background:#292a2f;color:#eee;border-radius:10px;font-family:inherit;font-size:.75rem;cursor:pointer}
+.download-btn:active{transform:scale(.97);background:#33343a}
+.type-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 16px}
+.type-btn{border:1px solid #45464c;background:#1b1c20;color:#92939a;border-radius:9px;padding:11px 7px;font-family:inherit;font-size:.68rem;cursor:pointer}
+.type-btn.active{background:#292a2f;color:#eee;border-color:#707178}
+.status{display:none;margin-top:18px;padding:13px;border:1px dashed #45464c;border-radius:10px;font-size:.72rem;line-height:1.6;color:#aaaab0}
+.status.show{display:block}
+
+.preview-media{
+    width:100%;
+    margin:0 0 14px;
+    border:1px solid #3b3c42;
+    border-radius:10px;
+    overflow:hidden;
+    background:#111216;
+}
+.preview-media video{
+    display:block;
+    width:100%;
+    max-height:420px;
+    object-fit:contain;
+    background:#000;
+}
+.preview-media audio{
+    display:block;
+    width:100%;
+    height:52px;
+}
+.photo-preview-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:10px}
+.photo-preview-item{position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:8px;background:#0b0c0f;border:1px solid #34353b}
+.photo-preview-item img{display:block;width:100%;height:100%;object-fit:cover}
+.photo-preview-item span{position:absolute;left:7px;bottom:7px;padding:4px 7px;border-radius:6px;background:rgba(0,0,0,.72);color:#eee;font-size:.58rem}
+.media-desc{
+    margin:10px 0 14px;
+    padding:13px 45px 13px 13px;
+    border:1px solid #3b3c42;
+    border-radius:10px;
+    background:#222328;
+    font-size:.72rem;
+    line-height:1.7;
+    color:#c9c9cd;
+    white-space:pre-wrap;
+    word-break:break-word;
+    position:relative;
+}
+.media-desc-label{
+    display:block;
+    margin-bottom:6px;
+    font-family:Arial,sans-serif;
+    font-size:.62rem;
+    font-weight:800;
+    letter-spacing:1.5px;
+    color:#888990;
+}
+.copy-desc{
+    position:absolute;
+    right:9px;
+    top:9px;
+    width:28px;
+    height:28px;
+    border:1px solid #45464c;
+    background:#1b1c20;
+    color:#bfc0c5;
+    border-radius:7px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.15s ease;
+}
+.copy-desc:active{transform:scale(.94);background:#292a2f}
+
+.result{display:none;margin-top:16px;border:1px solid #3b3c42;border-radius:12px;padding:14px;background:#1b1c20}
+.result.show{display:block}
+.result-title{font-family:Arial,sans-serif;color:#eee;font-size:.85rem;margin-bottom:10px}
+.result-actions{display:grid;gap:8px}
+.result-actions a{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border:1px solid #45464c;border-radius:9px;padding:11px;color:#eee;font-size:.68rem}
+.tool-note{margin-top:18px;font-size:.62rem;line-height:1.6;color:#777980}
+.back-btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:1px solid #45464c;border-radius:9px;padding:10px 13px;color:#bfc0c5;font-size:.68rem;margin-bottom:18px}
+@media(max-width:480px){.tools-main{padding:0 30px}.downloader{padding:22px 16px}.tool-title{font-size:1.3rem}}
+@media(max-width:390px){.tools-main{padding:0 20px}}
+</style>
+</head>
+<body>
+<div class="tools-page">
+<header class="topbar">
+    <img class="avatar" src="https://files.catbox.moe/e58766.jpg" alt="GIIKUN">
+    <div class="identity">
+        <h1>GII ZOLDYCK</h1>
+        <p>Web Developer</p>
+    </div>
+    <div class="social-top">
+        <a href="https://github.com/GiiZoldyck" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://t.me/sugz2" target="_blank" rel="noopener" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://wa.me/6285722503520" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="far fa-comment"></i></a>
+        <a href="https://tiktok.com/giizoldyck19" onclick="return false;" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+    </div>
+</header>
+<main class="tools-main">
+<section class="tool-section">
+<div class="tool-label">TOOLS</div>
+<a class="back-btn" href="#" onclick="history.back(); return false;"><i class="fas fa-arrow-left"></i> BACK TO PORTFOLIO</a>
+<div class="downloader">
+<h2 class="tool-title">Instagram Downloader</h2>
+<p class="tool-desc">Download Reels, Post, atau Story dari link Instagram publik.</p>
+
+<div class="type-row">
+<button class="type-btn active" data-type="reels"><i class="fas fa-clapperboard"></i> REELS</button>
+<button class="type-btn" data-type="post"><i class="fas fa-image"></i> POST</button>
+<button class="type-btn" data-type="story"><i class="fas fa-circle"></i> STORY</button>
+</div>
+
+<div class="url-box">
+<input class="url-input" id="instagramUrl" type="url" placeholder="Tempel link TikTok di sini..." autocomplete="off">
+<button class="download-btn" id="downloadBtn"><i class="fas fa-download"></i> DOWNLOAD</button>
+</div>
+
+<div class="status" id="status"></div>
+<div class="result" id="result">
+<div class="result-title" id="resultTitle">Hasil download</div>
+<div class="result-actions" id="resultActions"></div>
+</div>
+<p class="tool-note">Mendukung link Instagram publik untuk Reels, Post, dan Story. Ketersediaan hasil bergantung pada link dan layanan API.</p>
+</div>
+</section>
+</main>
+<script>
+const btn = document.getElementById('downloadBtn');
+const input = document.getElementById('instagramUrl');
+const status = document.getElementById('status');
+const result = document.getElementById('result');
+const resultTitle = document.getElementById('resultTitle');
+const resultActions = document.getElementById('resultActions');
+
+let selectedType = 'reels';
+
+document.querySelectorAll('.type-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+    button.classList.add('active');
+    selectedType = button.dataset.type;
+    resetResult();
+  });
+});
+
+function setStatus(text, show = true) {
+  status.textContent = text;
+  status.classList.toggle('show', show);
+}
+
+function resetResult() {
+  result.classList.remove('show');
+  resultActions.innerHTML = '';
+  const preview = document.getElementById('mediaPreview');
+  if (preview) preview.remove();
+}
+
+function cleanUrl(value) {
+  if (typeof value !== 'string') return '';
+
+  const text = value.trim();
+
+  // Format API: [URL](URL) -> ambil URL yang kedua.
+  const markdown = text.match(/^\s*\[[\s\S]*?\]\((https?:\/\/[\s\S]+)\)\s*$/i);
+  let url = markdown ? markdown[1].trim() : text;
+
+  // Bersihkan escape dari JSON.
+  url = url.replace(/\\_/g, '_').replace(/\\\//g, '/');
+
+  return /^https?:\/\/.+$/i.test(url) ? url : '';
+}
+
+function isInstagramUrl(value) {
+  try {
+    const host = new URL(value).hostname.toLowerCase();
+    return host === 'instagram.com' || host.endsWith('.instagram.com');
+  } catch {
+    return false;
+  }
+}
+
+function getMedia(data) {
+  const media = [];
+  const total = Number(data.total_media) || 0;
+
+  for (let i = 1; i <= total; i++) {
+    const url = cleanUrl(data['media_url_' + i]);
+    if (url) media.push(url);
+  }
+
+  // Post satu media / Reels / Story.
+  const direct = cleanUrl(data.url);
+  if (direct) media.unshift(direct);
+
+  return [...new Set(media)];
+}
+
+function addDownload(label, url) {
+  const href = cleanUrl(url);
+  if (!href) return;
+
+  const a = document.createElement('a');
+  a.href = href;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  a.download = '';
+  a.innerHTML = '<i class="fas fa-download"></i> ' + label;
+  resultActions.appendChild(a);
+}
+
+function addImagePreview(url) {
+  const src = cleanUrl(url);
+  if (!src) return false;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'preview-media';
+  wrap.id = 'mediaPreview';
+
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = 'Thumbnail';
+  img.referrerPolicy = 'no-referrer';
+  img.style.cssText = 'display:block;width:100%;max-height:420px;object-fit:contain;background:#000;';
+
+  // Jangan menghapus preview kalau loading agak lama.
+  img.onerror = () => {
+    img.alt = 'Thumbnail tidak dapat dimuat';
+  };
+
+  wrap.appendChild(img);
+  result.insertBefore(wrap, resultActions);
+  return true;
+}
+
+function addPhotoPreview(images) {
+  if (!images.length) return;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'preview-media';
+  wrap.id = 'mediaPreview';
+
+  const grid = document.createElement('div');
+  grid.className = 'photo-preview-grid';
+
+  images.forEach((url, i) => {
+    const src = cleanUrl(url);
+    if (!src) return;
+
+    const item = document.createElement('div');
+    item.className = 'photo-preview-item';
+
+    const image = document.createElement('img');
+    image.src = src;
+    image.alt = 'Preview foto ' + (i + 1);
+    image.loading = 'lazy';
+
+    const number = document.createElement('span');
+    number.textContent = '#' + (i + 1);
+
+    item.append(image, number);
+    grid.appendChild(item);
+  });
+
+  if (grid.children.length) {
+    wrap.appendChild(grid);
+    result.insertBefore(wrap, resultActions);
+  }
+}
+
+async function downloadInstagram() {
+  const url = input.value.trim();
+  resetResult();
+
+  if (!url) {
+    setStatus('Silakan tempel link Instagram terlebih dahulu.');
+    return;
+  }
+
+  if (!isInstagramUrl(url)) {
+    setStatus('Link harus berupa link Instagram yang valid.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.style.opacity = '.6';
+  setStatus('MEMPROSES...');
+
+  try {
+    const api = 'https://jerrycoder.oggyapi.workers.dev/down/insta?url=' + encodeURIComponent(url);
+    const response = await fetch(api, { headers: { Accept: 'application/json' } });
+
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+
+    const json = await response.json();
+    if (json.status !== 'success' || !json.data) {
+      throw new Error('Media tidak ditemukan dari API.');
+    }
+
+    const data = json.data;
+    const media = getMedia(data);
+    const thumbnail = cleanUrl(data.thumbnail);
+
+    if (!media.length) {
+      throw new Error('URL media tidak tersedia dari API.');
+    }
+
+    if (selectedType === 'reels') {
+      const video = media[0];
+      addImagePreview(thumbnail);
+      addDownload('DOWNLOAD REELS', video);
+      resultTitle.textContent = 'Reels ditemukan';
+
+    } else if (selectedType === 'story') {
+      if (String(data.type).toLowerCase() === 'image') {
+        // Story gambar: preview media asli.
+        addImagePreview(media[0]);
+        addDownload('DOWNLOAD FOTO', media[0]);
+      } else {
+        // Story video: preview dari thumbnail API.
+        addImagePreview(thumbnail);
+        addDownload('DOWNLOAD STORY', media[0]);
+      }
+      resultTitle.textContent = 'Story ditemukan';
+
+    } else {
+      // POST: dipertahankan seperti fungsi sebelumnya.
+      addPhotoPreview(media);
+      media.forEach((mediaUrl, i) => {
+        addDownload(
+          media.length > 1 ? 'DOWNLOAD FOTO ' + (i + 1) : 'DOWNLOAD FOTO',
+          mediaUrl
+        );
+      });
+      resultTitle.textContent = 'Post ditemukan';
+    }
+
+    result.classList.add('show');
+    setStatus(
+      selectedType === 'post' && media.length > 1
+        ? 'Berhasil menemukan ' + media.length + ' foto.'
+        : 'Berhasil menemukan media. Tekan tombol download di bawah.'
+    );
+
+  } catch (error) {
+    setStatus('Gagal: ' + error.message + ' Coba link Instagram publik lain atau ulangi beberapa saat lagi.');
+  } finally {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  }
+}
+
+btn.addEventListener('click', downloadInstagram);
+input.addEventListener('keydown', event => {
+  if (event.key === 'Enter') downloadInstagram();
+});
+</script>
+</body>
+</html>
